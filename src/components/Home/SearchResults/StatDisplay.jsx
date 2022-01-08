@@ -18,13 +18,13 @@ function StatDisplay({
   function getStatIcon() {
     switch (name) {
       case 'stars':
-        return <StarIcon style={{ color, marginRight: '5px', marginTop: '2px' }} />;
+        return <StarIcon style={{ color: `rgb(${color})`, marginRight: '5px', marginTop: '2px' }} />;
       case 'forks':
-        return <ForkLeftIcon style={{ color, marginRight: '5px', marginTop: '2px' }} />;
+        return <ForkLeftIcon style={{ color: `rgb(${color})`, marginRight: '5px', marginTop: '2px' }} />;
       case 'issues':
-        return <BugReportIcon style={{ color, marginRight: '5px', marginTop: '2px' }} />;
+        return <BugReportIcon style={{ color: `rgb(${color})`, marginRight: '5px', marginTop: '2px' }} />;
       default:
-        break;
+        return null;
     }
   }
 
@@ -32,7 +32,7 @@ function StatDisplay({
     <Grid item xs={12} sm={4} className={classes.statItem}>
       <div className={classes.statDisplay}>
         {getStatIcon()}
-        <Typography color={color} lineHeight="2.2rem">
+        <Typography color={`rgb(${color})`} lineHeight="2.2rem">
           {value}
         </Typography>
       </div>

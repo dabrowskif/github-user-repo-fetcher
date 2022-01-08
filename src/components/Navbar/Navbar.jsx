@@ -13,8 +13,8 @@ function Navbar() {
   return (
     <AppBar className={classes.appBar}>
       <Toolbar className={classes.title}>
-        <IconButton component={Link} to="/"><HomeIcon color="white" fontSize="large" /></IconButton>
-        <Typography variant="h4">Allegro coding challenge</Typography>
+        <IconButton component={Link} to="/"><HomeIcon fontSize="large" style={{ color: 'white' }} /></IconButton>
+        <Typography variant="h4" style={{ marginTop: '11px' }}>Allegro coding challenge</Typography>
       </Toolbar>
     </AppBar>
   );

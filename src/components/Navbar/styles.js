@@ -1,8 +1,12 @@
 import { makeStyles } from '@mui/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   appBar: {
     justifyContent: 'space-between',
-    padding: '10px',
+    padding: theme.spacing(1),
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center',
   },
 }));

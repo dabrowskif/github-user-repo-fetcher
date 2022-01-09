@@ -6,10 +6,9 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import PropTypes from 'prop-types';
 import useStyles from './styles';
-import { getAllUserRepositories } from '../../../api';
 
 function Form({
-  setIsLoading, settings, setSettings, setUserRepositories,
+  fetchRepositories,
 }) {
   const classes = useStyles();
   const [formUsername, setFormUsername] = useState('');
@@ -19,14 +18,8 @@ function Form({
   };
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
-    const userRepositories = await getAllUserRepositories(formUsername);
-    setUserRepositories(userRepositories.repositories);
-    setSettings({
-      ...settings, username: formUsername, page: 0, rowsPerPage: 10, numberOfResults: userRepositories.numberOfRepositories,
-    });
-    setIsLoading(false);
+    fetchRepositories(formUsername);
   };
 
   return (
@@ -58,10 +51,7 @@ function Form({
 }
 
 Form.propTypes = {
-  setIsLoading: PropTypes.func.isRequired,
-  settings: PropTypes.objectOf(PropTypes.any).isRequired,
-  setSettings: PropTypes.func.isRequired,
-  setUserRepositories: PropTypes.func.isRequired,
+  fetchRepositories: PropTypes.func.isRequired,
 };
 
 export default Form;

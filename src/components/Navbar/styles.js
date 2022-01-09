@@ -9,4 +9,11 @@ export default makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  titleText: {
+    marginTop: '2px',
+    paddingLeft: '25px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '20px',
+    },
+  },
 }));

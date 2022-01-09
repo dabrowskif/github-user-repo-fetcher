@@ -58,7 +58,7 @@ export default makeStyles((theme) => ({
     lineHeight: '2.1rem',
     fontSize: 'calc(10px + 0.5vw)',
     [theme.breakpoints.down('sm')]: {
-      lineHeight: '2rem',
+      lineHeight: '1.7rem',
       paddingRight: '10px',
     },
   }),

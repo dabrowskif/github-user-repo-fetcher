@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Container, Grow } from '@mui/material';
 
@@ -6,7 +7,7 @@ import Form from './Form/Form';
 import SearchResults from './SearchResults/SearchResults';
 import Pagination from './Pagination/Pagination';
 import Options from './Options/Options';
-import { STARS } from '../../functions/sortingAlgorithm';
+import sortArrayByValue, { STARS } from '../../functions/sortingAlgorithm';
 import { getAllUserRepositories } from '../../api';
 
 function Home() {
@@ -26,9 +27,13 @@ function Home() {
     setIsLoading(true);
     const fetchedUserRepositories = await getAllUserRepositories(username);
 
-    setUserRepositories(fetchedUserRepositories.repositories);
+    setUserRepositories(sortArrayByValue(fetchedUserRepositories.repositories, settings.sortedValue));
     setSettings({
-      ...settings, username, page: 0, rowsPerPage: 10, numberOfResults: fetchedUserRepositories.numberOfRepositories,
+      ...settings,
+      username,
+      page: 0,
+      rowsPerPage: 10,
+      numberOfResults: fetchedUserRepositories.numberOfRepositories,
     });
     setFetchInfo({
       ...fetchInfo,
@@ -41,12 +46,16 @@ function Home() {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    if (Object.keys(params).length !== 0) {
+  const sortRepositories = (sortedValue) => {
+    setUserRepositories(sortArrayByValue(userRepositories, sortedValue));
+  };
+
+  useEffect(async () => {
+    if (Object.keys(params).length !== 0 && userRepositories.length === 0) {
       setSettings({ ...settings, username: params.username });
       fetchRepositories(params.username);
     }
-  }, []);
+  }, [userRepositories]);
 
   return (
     <Grow in timeout={600}>
@@ -56,6 +65,7 @@ function Home() {
         />
         <Options
           fetchInfo={fetchInfo}
+          sortRepositories={sortRepositories}
           settings={settings}
           setSettings={setSettings}
         />
@@ -65,7 +75,7 @@ function Home() {
         />
         <SearchResults
           settings={settings}
-          repositories={userRepositories}
+          userRepositories={userRepositories}
           isLoading={isLoading}
         />
         {getNumberOfShowedResults() > 5

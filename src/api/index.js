@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const REQUEST_LIMIT = 60;
-
 const API = axios.create({ baseURL: 'https://api.github.com' });
 
 const getUserRequestsInfo = async () => API.get('/rate_limit');
@@ -13,24 +11,24 @@ export const getNumberOfUserRepositories = async (username) => {
 
 export const getAllUserRepositories = async (username) => {
   const numberOfRepositories = await getNumberOfUserRepositories(username);
+  const pages = [];
   const repositories = [];
 
-  let requestInfo = await getUserRequestsInfo();
-  let partialRepositories = [];
-  let page = 1;
+  const requestInfo = await getUserRequestsInfo();
+  for (let i = 1; i <= numberOfRepositories / 100 + 1; i += 1) {
+    pages.push(i);
+  }
 
-  do {
-  // eslint-disable-next-line no-await-in-loop
-    partialRepositories = await API.get(`/users/${username}/repos?per_page=100&page=${page}`);
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const partialRepositories of pages.map((page) => API.get(`/users/${username}/repos?per_page=100&page=${page}`))) {
     partialRepositories.data.forEach((repository) => {
       repositories.push(repository);
     });
-    // eslint-disable-next-line no-await-in-loop
-    requestInfo = await getUserRequestsInfo();
-    page += 1;
-    console.log('Fetched', repositories.length, 'out of', numberOfRepositories, 'repositories.');
-  } while (requestInfo.data.rate.used < REQUEST_LIMIT && partialRepositories.data.length !== 0);
-  return { repositories, numberOfRepositories, requestInfo };
+  }
+
+  return {
+    repositories, numberOfRepositories, requestInfo,
+  };
 };
 
 // This function is not useful for the case of exercise, as GitHub doesn't allow fetching repositories already filtered by stars.

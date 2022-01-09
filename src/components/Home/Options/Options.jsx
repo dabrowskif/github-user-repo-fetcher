@@ -7,10 +7,14 @@ import useStyles from './styles';
 
 import { FORKS, ISSUES, STARS } from '../../../functions/sortingAlgorithm';
 
-function Options({ fetchInfo, settings, setSettings }) {
+function Options({
+  sortRepositories, fetchInfo, settings, setSettings,
+}) {
   const classes = useStyles();
   const handleChange = (e) => {
     setSettings({ ...settings, sortedValue: e.target.value });
+    setSettings({ ...settings, page: 0 });
+    sortRepositories(e.target.value);
   };
 
   return (
@@ -51,6 +55,7 @@ function Options({ fetchInfo, settings, setSettings }) {
 }
 
 Options.propTypes = {
+  sortRepositories: PropTypes.func.isRequired,
   fetchInfo: PropTypes.objectOf(PropTypes.number).isRequired,
   settings: PropTypes.objectOf(PropTypes.any).isRequired,
   setSettings: PropTypes.func.isRequired,

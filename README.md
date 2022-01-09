@@ -15,21 +15,16 @@ The application should run on the 'http://localhost:3000/' url.
 # Additional notes
 
 GitHub doesn't allow server-side sorting option. 
-Therefore, to sort an array of repositories, there is a need of fetching all repositories and sort them locally.
-This is not a problem while fetching a user with small amount of repositories.
-
-However, fetching a user with a greater amount of repositories can take some time 
-(approximately 100 repositories per second).
-
-Therefore, sorting, as well as pagination, works only locally. 
+Therefore, to sort an array of repositories, there is a need of fetching all repositories and sort them locally, 
+as well as paginate them locally. 
 
 There is also a request counter fetched from a GitHub api.
-Unauthenticated users can only make 60 requests (fetching 100 repositories in small amount of time counts as about 1 fetch)
-in some specific amount of time (about half an hour).
+Unauthenticated users can only make 60 requests (fetching 100 repositories in a small amount of time counts as about 1 fetch)
+in some specific amount of time (about half an hour). Fetching, for example, Microsoft twice in a row 
+leads to blocking an IP address, so I do recommend testing this app with some smaller companies.
 
 Sometimes, if the request limit is about to be filled, repositories fetching can be interrupted,
-so only part of all repositories are actually fetched into the app, showed and sorted.
-Specific info is given in the browser console ( fetched / maxToFetch).
+so only a part of all repositories are actually fetched into the app, showed and sorted.
 
 There is also a feature that allows you to type specific username into the url and automatically fetch it's repositories.
 For example 'http://localhost:3000/dabrowskif'.

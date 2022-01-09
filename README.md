@@ -1,3 +1,40 @@
+# Installation
+
+Download this repository.
+Inside the main folder (allegro-coding-challenge), run the following command:
+
+### `npm install`
+
+to install all dependencies, then run the following command:
+
+### `npm start`
+
+to run the application.
+The application should run on the 'http://localhost:3000/' url.
+
+# Additional notes
+
+GitHub doesn't allow server-side sorting option. 
+Therefore, to sort an array of repositories, there is a need of fetching all repositories and sort them locally.
+This is not a problem while fetching a user with small amount of repositories.
+
+However, fetching a user with a greater amount of repositories can take some time 
+(approximately 100 repositories per second).
+
+Therefore, sorting, as well as pagination, works only locally. 
+
+There is also a request counter fetched from a GitHub api.
+Unauthenticated users can only make 60 requests (fetching 100 repositories in small amount of time counts as about 1 fetch)
+in some specific amount of time (about half an hour).
+
+Sometimes, if the request limit is about to be filled, repositories fetching can be interrupted,
+so only part of all repositories are actually fetched into the app, showed and sorted.
+Specific info is given in the browser console ( fetched / maxToFetch).
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

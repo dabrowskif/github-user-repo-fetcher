@@ -31,6 +31,8 @@ Sometimes, if the request limit is about to be filled, repositories fetching can
 so only part of all repositories are actually fetched into the app, showed and sorted.
 Specific info is given in the browser console ( fetched / maxToFetch).
 
+There is also a feature that allows you to type specific username into the url and automatically fetch it's repositories.
+For example 'http://localhost:3000/dabrowskif'.
 
 
 

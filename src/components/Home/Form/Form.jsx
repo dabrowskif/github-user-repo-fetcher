@@ -3,14 +3,14 @@ import {
   Divider, FormGroup, Grid, IconButton, InputAdornment, Paper, TextField, Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 
-function Form({
-  fetchRepositories,
-}) {
+function Form({ fetchRepositories }) {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [formUsername, setFormUsername] = useState('');
 
   const handleChange = (e) => {
@@ -19,6 +19,7 @@ function Form({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    navigate(`/${formUsername}`);
     fetchRepositories(formUsername);
   };
 

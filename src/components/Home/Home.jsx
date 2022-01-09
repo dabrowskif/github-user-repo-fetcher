@@ -50,7 +50,7 @@ function Home() {
 
   return (
     <Grow in timeout={600}>
-      <Container maxWidth="sm">
+      <Container style={{ padding: '0px' }} maxWidth="sm">
         <Form
           fetchRepositories={fetchRepositories}
         />

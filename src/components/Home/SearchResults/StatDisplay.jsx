@@ -11,28 +11,28 @@ import useStyles from './styles';
 function StatDisplay({
   color, name, value,
 }) {
-  const customStyleProps = { borderColor: color };
+  const customStyleProps = { statColor: color };
   const classes = useStyles(customStyleProps);
 
   // eslint-disable-next-line consistent-return
   function getStatIcon() {
     switch (name) {
       case 'stars':
-        return <StarIcon style={{ color: `rgb(${color})`, marginRight: '5px', marginTop: '2px' }} />;
+        return <StarIcon className={classes.statIcon} />;
       case 'forks':
-        return <ForkLeftIcon style={{ color: `rgb(${color})`, marginRight: '5px', marginTop: '2px' }} />;
+        return <ForkLeftIcon className={classes.statIcon} />;
       case 'issues':
-        return <BugReportIcon style={{ color: `rgb(${color})`, marginRight: '5px', marginTop: '2px' }} />;
+        return <BugReportIcon className={classes.statIcon} />;
       default:
         return null;
     }
   }
 
   return (
-    <Grid item xs={12} sm={4} className={classes.statItem}>
-      <div className={classes.statDisplay}>
+    <Grid item xs={4} className={classes.statGridItem}>
+      <div className={classes.statDiv}>
         {getStatIcon()}
-        <Typography color={`rgb(${color})`} lineHeight="2.2rem">
+        <Typography className={classes.statValue}>
           {value}
         </Typography>
       </div>

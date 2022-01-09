@@ -26,8 +26,8 @@ function Result({ repository }) {
             {repository.description}
           </Typography>
         </Grid>
-        <Grid item xs={12} className={classes.resultStats}>
-          <Grid container>
+        <Grid item xs={12}>
+          <Grid container className={classes.resultStats} spacing={1}>
             <StatDisplay color="255,215,0" name="stars" value={repository?.stargazers_count} />
             <StatDisplay color="128,0,128" name="forks" value={repository?.forks_count} />
             <StatDisplay color="255,0,0" name="issues" value={repository?.open_issues} />

@@ -6,14 +6,16 @@ import Form from './Form/Form';
 import SearchResults from './SearchResults/SearchResults';
 import Pagination from './Pagination/Pagination';
 import Options from './Options/Options';
-import { STARS } from '../../api/sortingAlgorithm';
+import { STARS } from '../../functions/sortingAlgorithm';
 import { getAllUserRepositories } from '../../api';
 
 function Home() {
   const [userRepositories, setUserRepositories] = useState([]);
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [fetchInfo, setFetchInfo] = useState({ limit: 60, used: 0 });
+  const [fetchInfo, setFetchInfo] = useState({
+    limit: 60, used: 0, repositoriesFetched: 0, maxRepositoriesToFetch: 0,
+  });
   const [settings, setSettings] = useState({
     sortedValue: STARS, username: '', page: 0, rowsPerPage: 10, numberOfResults: 0,
   });
@@ -28,7 +30,13 @@ function Home() {
     setSettings({
       ...settings, username, page: 0, rowsPerPage: 10, numberOfResults: fetchedUserRepositories.numberOfRepositories,
     });
-    setFetchInfo({ ...fetchInfo, used: fetchedUserRepositories.requestInfo.data.rate.used, limit: fetchedUserRepositories.requestInfo.data.rate.limit });
+    setFetchInfo({
+      ...fetchInfo,
+      used: fetchedUserRepositories.requestInfo.data.rate.used,
+      limit: fetchedUserRepositories.requestInfo.data.rate.limit,
+      repositoriesFetched: fetchedUserRepositories.repositories.length,
+      maxRepositoriesToFetch: fetchedUserRepositories.numberOfRepositories,
+    });
 
     setIsLoading(false);
   };

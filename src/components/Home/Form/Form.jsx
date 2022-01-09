@@ -30,7 +30,7 @@ function Form({ fetchRepositories }) {
           <Typography variant="h4" gutterBottom>
             Github repos showcase
           </Typography>
-          <Grid item xs={12}><Divider sx={{ borderColor: '#757de8' }} /></Grid>
+          <Grid item xs={12}><Divider sx={{ borderColor: '#2196f3' }} /></Grid>
         </Grid>
         <Grid item xs={12}>
           <form onSubmit={handleSubmit}>

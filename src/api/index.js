@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REQUEST_LIMIT = 50;
+const REQUEST_LIMIT = 60;
 
 const API = axios.create({ baseURL: 'https://api.github.com' });
 
@@ -28,11 +28,8 @@ export const getAllUserRepositories = async (username) => {
     // eslint-disable-next-line no-await-in-loop
     requestInfo = await getUserRequestsInfo();
     page += 1;
-    console.log('Fetched ', repositories.length, ' repositories');
+    console.log('Fetched', repositories.length, 'out of', numberOfRepositories, 'repositories.');
   } while (requestInfo.data.rate.used < REQUEST_LIMIT && partialRepositories.data.length !== 0);
-
-  console.log(`Fetched ${repositories.length}/${numberOfRepositories}`);
-
   return { repositories, numberOfRepositories, requestInfo };
 };
 

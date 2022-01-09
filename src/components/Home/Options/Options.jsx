@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import useStyles from './styles';
 
-import { FORKS, ISSUES, STARS } from '../../../api/sortingAlgorithm';
+import { FORKS, ISSUES, STARS } from '../../../functions/sortingAlgorithm';
 
 function Options({ fetchInfo, settings, setSettings }) {
   const classes = useStyles();
@@ -36,6 +36,11 @@ function Options({ fetchInfo, settings, setSettings }) {
             <Grid item xs={12}>
               <Typography className={classes.rateLimit}>
                 {`You have used ${fetchInfo?.used} / ${fetchInfo?.limit} requests.`}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography className={classes.rateLimit}>
+                {`You have fetched ${fetchInfo?.repositoriesFetched} / ${fetchInfo?.maxRepositoriesToFetch} repositories.`}
               </Typography>
             </Grid>
           </Grid>

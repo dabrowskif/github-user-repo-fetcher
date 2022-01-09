@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 import Result from './Result';
-import sortArrayByValue from '../../../api/sortingAlgorithm';
+import sortArrayByValue from '../../../functions/sortingAlgorithm';
 
 function SearchResults({
   settings, repositories, isLoading,

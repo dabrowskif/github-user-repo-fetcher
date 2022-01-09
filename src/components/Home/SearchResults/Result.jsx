@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Divider,
-  Grid,
+  Grid, Link,
   Typography,
 } from '@mui/material';
 
@@ -9,14 +9,16 @@ import PropTypes from 'prop-types';
 import useStyles from './styles';
 import StatDisplay from './StatDisplay';
 
-function Result({ repository }) {
+function Result({ repository, username }) {
   const classes = useStyles();
+
+  const link = `https://github.com/${username}/${repository?.name}`;
 
   return (
     <Grid item xs={12}>
       <Grid container className={classes.resultGrid}>
         <Grid item xs={12} className={classes.resultInfo}>
-          <Typography variant="h5" className={classes.resultName}>{repository?.name}</Typography>
+          <Typography variant="h5" className={classes.resultName}><Link href={link}>{repository?.name}</Link></Typography>
           <Typography variant="caption" className={classes.resultDate}>{repository?.pushed_at}</Typography>
         </Grid>
         <Grid item xs={12}>
@@ -41,6 +43,7 @@ function Result({ repository }) {
 
 Result.propTypes = {
   repository: PropTypes.objectOf(PropTypes.any).isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 export default Result;

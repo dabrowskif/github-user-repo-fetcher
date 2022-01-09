@@ -28,7 +28,7 @@ function SearchResults({ settings, userRepositories, isLoading }) {
               <Grid container>
                 {
                   showPaginatedRepositories(userRepositories)?.map((repository) => (
-                    <Result key={repository?.id} repository={repository} />
+                    <Result key={repository?.id} repository={repository} username={settings.username} />
                   ))
                 }
               </Grid>

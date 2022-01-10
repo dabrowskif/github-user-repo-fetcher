@@ -5,16 +5,40 @@ const API = axios.create({ baseURL: 'https://api.github.com' });
 const getUserRequestsInfo = async () => API.get('/rate_limit');
 
 export const getNumberOfUserRepositories = async (username) => {
-  const userInfo = await API.get(`/users/${username}`);
-  return userInfo.data.public_repos;
+  let numberOfRepositories = 0;
+  let statusCode = 0;
+
+  await API.get(`/users/${username}`)
+    .then((res) => {
+      numberOfRepositories = res.data.public_repos;
+      statusCode = res.status;
+    })
+    .catch((error) => {
+      statusCode = error.toJSON().status;
+    });
+
+  return { statusCode, numberOfRepositories };
 };
 
 export const getAllUserRepositories = async (username) => {
-  const numberOfRepositories = await getNumberOfUserRepositories(username);
   const pages = [];
-  const repositories = [];
+  const serverResponse = {
+    statusCode: 0,
+    numberOfRepositories: 0,
+    repositories: [],
+    requestInfo: {},
+  };
 
-  const requestInfo = await getUserRequestsInfo();
+  serverResponse.requestInfo = await getUserRequestsInfo();
+  const { statusCode, numberOfRepositories } = await getNumberOfUserRepositories(username);
+
+  serverResponse.statusCode = statusCode;
+  serverResponse.numberOfRepositories = numberOfRepositories;
+
+  if (statusCode !== 200) {
+    return serverResponse;
+  }
+
   for (let i = 1; i <= numberOfRepositories / 100 + 1; i += 1) {
     pages.push(i);
   }
@@ -22,13 +46,11 @@ export const getAllUserRepositories = async (username) => {
   // eslint-disable-next-line no-restricted-syntax
   for await (const partialRepositories of pages.map((page) => API.get(`/users/${username}/repos?per_page=100&page=${page}`))) {
     partialRepositories.data.forEach((repository) => {
-      repositories.push(repository);
+      serverResponse.repositories.push(repository);
     });
   }
 
-  return {
-    repositories, numberOfRepositories, requestInfo,
-  };
+  return serverResponse;
 };
 
 // This function is not useful for the case of exercise, as GitHub doesn't allow fetching repositories already filtered by stars.

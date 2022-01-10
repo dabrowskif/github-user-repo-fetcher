@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 
-import { Link } from 'react-router-dom';
 import useStyles from './styles';
 
 function Navbar() {
@@ -13,7 +12,9 @@ function Navbar() {
   return (
     <AppBar className={classes.appBar}>
       <Toolbar className={classes.title}>
-        <IconButton component={Link} to="/"><HomeIcon fontSize="large" style={{ color: 'white' }} /></IconButton>
+        <IconButton>
+          <HomeIcon fontSize="large" style={{ color: 'white' }} />
+        </IconButton>
         <Typography variant="h4" className={classes.titleText}>Allegro coding challenge</Typography>
       </Toolbar>
     </AppBar>

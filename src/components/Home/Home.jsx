@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Container, Grow } from '@mui/material';
 
@@ -11,9 +10,10 @@ import sortArrayByValue, { STARS } from '../../functions/sortingAlgorithm';
 import { getAllUserRepositories } from '../../api';
 
 function Home() {
-  const [userRepositories, setUserRepositories] = useState([]);
   const params = useParams();
+  const [userRepositories, setUserRepositories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [serverResStatusCode, setServerResStatusCode] = useState(200);
   const [fetchInfo, setFetchInfo] = useState({
     limit: 60, used: 0, repositoriesFetched: 0, maxRepositoriesToFetch: 0,
   });
@@ -25,23 +25,42 @@ function Home() {
 
   const fetchRepositories = async (username) => {
     setIsLoading(true);
-    const fetchedUserRepositories = await getAllUserRepositories(username);
+    const serverResponse = await getAllUserRepositories(username);
 
-    setUserRepositories(sortArrayByValue(fetchedUserRepositories.repositories, settings.sortedValue));
-    setSettings({
-      ...settings,
-      username,
-      page: 0,
-      rowsPerPage: 10,
-      numberOfResults: fetchedUserRepositories.numberOfRepositories,
-    });
-    setFetchInfo({
-      ...fetchInfo,
-      used: fetchedUserRepositories.requestInfo.data.rate.used,
-      limit: fetchedUserRepositories.requestInfo.data.rate.limit,
-      repositoriesFetched: fetchedUserRepositories.repositories.length,
-      maxRepositoriesToFetch: fetchedUserRepositories.numberOfRepositories,
-    });
+    if (serverResponse.statusCode === 200) {
+      setUserRepositories(sortArrayByValue(serverResponse.repositories, settings.sortedValue));
+      setSettings({
+        ...settings,
+        username,
+        page: 0,
+        rowsPerPage: 10,
+        numberOfResults: serverResponse.numberOfRepositories,
+      });
+      setFetchInfo({
+        ...fetchInfo,
+        used: serverResponse.requestInfo.data.rate.used,
+        limit: serverResponse.requestInfo.data.rate.limit,
+        repositoriesFetched: serverResponse.repositories.length,
+        maxRepositoriesToFetch: serverResponse.numberOfRepositories,
+      });
+    } else {
+      setServerResStatusCode(serverResponse.statusCode);
+      setUserRepositories([]);
+      setSettings({
+        ...settings,
+        username,
+        page: 0,
+        rowsPerPage: 10,
+        numberOfResults: 0,
+      });
+      setFetchInfo({
+        ...fetchInfo,
+        used: serverResponse.requestInfo.data.rate.used,
+        limit: serverResponse.requestInfo.data.rate.limit,
+        repositoriesFetched: 0,
+        maxRepositoriesToFetch: 0,
+      });
+    }
 
     setIsLoading(false);
   };
@@ -51,7 +70,7 @@ function Home() {
   };
 
   useEffect(async () => {
-    if (Object.keys(params).length !== 0 && userRepositories.length === 0) {
+    if (Object.keys(params).length !== 0 && userRepositories.length === 0 && serverResStatusCode === 200) {
       setSettings({ ...settings, username: params.username });
       fetchRepositories(params.username);
     }
@@ -77,6 +96,7 @@ function Home() {
           settings={settings}
           userRepositories={userRepositories}
           isLoading={isLoading}
+          serverResStatusCode={serverResStatusCode}
         />
         {getNumberOfShowedResults() > 5
           ? (

@@ -7,6 +7,7 @@ import ForkLeftIcon from '@mui/icons-material/ForkLeft';
 import BugReportIcon from '@mui/icons-material/BugReport';
 
 import useStyles from './styles';
+import { FORKS, ISSUES, STARS } from '../../../functions/sortingAlgorithm';
 
 function StatDisplay({
   color, name, value,
@@ -14,14 +15,13 @@ function StatDisplay({
   const customStyleProps = { statColor: color };
   const classes = useStyles(customStyleProps);
 
-  // eslint-disable-next-line consistent-return
   function getStatIcon() {
     switch (name) {
-      case 'stars':
+      case STARS:
         return <StarIcon className={classes.statIcon} />;
-      case 'forks':
+      case FORKS:
         return <ForkLeftIcon className={classes.statIcon} />;
-      case 'issues':
+      case ISSUES:
         return <BugReportIcon className={classes.statIcon} />;
       default:
         return null;
